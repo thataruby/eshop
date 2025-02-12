@@ -34,7 +34,7 @@ public class ProductRepository {
                 .orElse(null);
     }
 
-    public void update(String id, Product updatedProduct) {
+    public void edit(String id, Product updatedProduct) {
         Product product = findById(id);
         if (product != null) {
             product.setProductName(updatedProduct.getProductName());

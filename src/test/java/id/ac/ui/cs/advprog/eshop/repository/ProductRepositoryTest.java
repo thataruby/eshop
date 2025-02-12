@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Iterator;
 
@@ -79,7 +78,7 @@ public class ProductRepositoryTest {
         updatedProduct.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
         updatedProduct.setProductName("Sampo Cap Usep");
         updatedProduct.setProductQuantity(50);
-        productRepository.update(updatedProduct.getProductId(), updatedProduct);
+        productRepository.edit(updatedProduct.getProductId(), updatedProduct);
 
         Product result = productRepository.findById("eb558e9f-1c39-460e-8860-71af6af63bd6");
         assertNotNull(result);
@@ -94,7 +93,7 @@ public class ProductRepositoryTest {
         product.setProductId("no-id");
         product.setProductName("Sampo Cap Thata");
         product.setProductQuantity(24);
-        productRepository.update(product.getProductId(), product);
+        productRepository.edit(product.getProductId(), product);
 
         assertNull(productRepository.findById("no-id"));
     }
