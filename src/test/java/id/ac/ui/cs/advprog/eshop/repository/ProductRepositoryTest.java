@@ -18,6 +18,7 @@ public class ProductRepositoryTest {
 
     @InjectMocks
     ProductRepository productRepository;
+
     @BeforeEach
     void setUp() {
     }
@@ -64,5 +65,57 @@ public class ProductRepositoryTest {
         savedProduct = productIterator.next();
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(productIterator.hasNext());
+    }
+
+    @Test
+    void testEditExistingProduct() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product updatedProduct = new Product();
+        updatedProduct.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        updatedProduct.setProductName("Sampo Cap Usep");
+        updatedProduct.setProductQuantity(50);
+        productRepository.update(updatedProduct.getProductId(), updatedProduct);
+
+        Product result = productRepository.findById("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        assertNotNull(result);
+        assertEquals("Sampo Cap Usep", result.getProductName());
+        assertEquals(50, result.getProductQuantity());
+        assertEquals("eb558e9f-1c39-460e-8860-71af6af63bd6", result.getProductId());
+    }
+
+    @Test
+    void testNonExistingProduct() {
+        Product product = new Product();
+        product.setProductId("no-id");
+        product.setProductName("Sampo Cap Thata");
+        product.setProductQuantity(24);
+        productRepository.update(product.getProductId(), product);
+
+        assertNull(productRepository.findById("no-id"));
+    }
+
+    @Test
+    void testDeleteExistingProduct() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        assertNotNull(productRepository.findById("eb558e9f-1c39-460e-8860-71af6af63bd6"));
+
+        productRepository.delete("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        assertNull(productRepository.findById("eb558e9f-1c39-460e-8860-71af6af63bd6"));
+    }
+
+    @Test
+    void testDeleteNonExistentProduct() {
+        productRepository.delete("no-id");
+        assertNull(productRepository.findById("no-id"));
     }
 }
