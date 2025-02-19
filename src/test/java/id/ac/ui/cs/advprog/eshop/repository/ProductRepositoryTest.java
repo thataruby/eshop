@@ -88,17 +88,6 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    void testNonExistingProduct() {
-        Product product = new Product();
-        product.setProductId("no-id");
-        product.setProductName("Sampo Cap Thata");
-        product.setProductQuantity(24);
-        productRepository.edit(product.getProductId(), product);
-
-        assertNull(productRepository.findById("no-id"));
-    }
-
-    @Test
     void testDeleteExistingProduct() {
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -117,4 +106,43 @@ public class ProductRepositoryTest {
         productRepository.delete("no-id");
         assertNull(productRepository.findById("no-id"));
     }
+
+    @Test
+    void testCreateProductGeneratesUUID() {
+        Product product1 = new Product();
+        product1.setProductName("Test Product 1");
+        product1.setProductQuantity(10);
+
+        Product createdProduct1 = productRepository.create(product1);
+
+        assertNotNull(createdProduct1.getProductId());
+        assertFalse(createdProduct1.getProductId().isEmpty());
+
+        Product product2 = new Product();
+        product2.setProductId("");
+        product2.setProductName("Test Product 2");
+        product2.setProductQuantity(15);
+
+        Product createdProduct2 = productRepository.create(product2);
+
+        assertNotNull(createdProduct2.getProductId());
+        assertFalse(createdProduct2.getProductId().isEmpty());
+    }
+
+
+    @Test
+    void testFindByIdWithNull() {
+        assertNull(productRepository.findById(null));
+    }
+
+    @Test
+    void testEditNonExistentProduct() {
+        Product updatedProduct = new Product();
+        updatedProduct.setProductName("Non-existent");
+        updatedProduct.setProductQuantity(20);
+
+        productRepository.edit("non-existent-id", updatedProduct);
+        assertNull(productRepository.findById("non-existent-id"));
+    }
+
 }
