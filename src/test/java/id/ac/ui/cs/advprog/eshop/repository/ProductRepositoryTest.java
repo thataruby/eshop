@@ -20,6 +20,7 @@ public class ProductRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        productRepository = new ProductRepository();
     }
     @Test
     void testCreateAndFind() {
