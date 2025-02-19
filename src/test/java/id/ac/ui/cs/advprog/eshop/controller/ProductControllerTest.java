@@ -39,7 +39,7 @@ public class ProductControllerTest {
     @Test
     void testCreateProductPage() throws Exception {
         mockMvc.perform(get("/product/create"))
-                .andExpect(view().name("createProduct"))
+                .andExpect(view().name("CreateProduct"))
                 .andExpect(model().attributeExists("product"));
     }
 
@@ -60,7 +60,7 @@ public class ProductControllerTest {
     @Test
     void testProductListPage() throws Exception {
         mockMvc.perform(get("/product/list"))
-                .andExpect(view().name("productList"))
+                .andExpect(view().name("ProductList"))
                 .andExpect(model().attributeExists("products"));
 
         verify(productService, times(1)).findAll();
