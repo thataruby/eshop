@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,5 +26,13 @@ public class Payment {
         this.method = method;
         this.status = status;
         this.paymentData = paymentData;
+    }
+
+    public void setStatus(String status) {
+        if (PaymentStatus.contains(status)) {
+            this.status = status;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 }
