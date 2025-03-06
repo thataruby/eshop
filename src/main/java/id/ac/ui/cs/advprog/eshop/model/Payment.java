@@ -6,10 +6,10 @@ import lombok.Setter;
 import java.util.Map;
 
 @Getter
+@Setter
 public class Payment {
     private String id;
     private String method;
-    @Setter
     private String status;
     private Map<String, String> paymentData;
 
@@ -17,16 +17,13 @@ public class Payment {
         this.id = id;
         this.method = method;
         this.paymentData = paymentData;
-        this.status = validatePayment();
+        this.status = "PENDING";
     }
 
-    private String validatePayment() {
-        if (method.equals("CASH_ON_DELIVERY")) {
-            if (paymentData.get("address") == null || paymentData.get("address").isEmpty()
-                    || paymentData.get("deliveryFee") == null || paymentData.get("deliveryFee").isEmpty()) {
-                return "REJECTED";
-            }
-        }
-        return "PENDING";
+    public Payment(String id, String method, String status, Map<String, String> paymentData) {
+        this.id = id;
+        this.method = method;
+        this.status = status;
+        this.paymentData = paymentData;
     }
 }
