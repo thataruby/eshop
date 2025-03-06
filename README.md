@@ -29,3 +29,11 @@ If I were to create another functional test suite to verify the product list cou
 2. It makes the project easier to update, test, and expand. Since each class has a clear role (SRP), changes to car-related code won’t break the product features. The OCP makes it easy to add new features without modifying existing classes, reducing the chances of introducing bugs, and the DIP allows us to replace service implementations easily, making testing simpler by using mock versions instead of real database interactions.
 3. The project would be messy and hard to update. If both cars and products were handled in one controller (SRP violation), changing one feature could break another. Ignoring OCP means that every time a new feature is added, old code must be changed, which increases the risk of breaking things. Without DIP, the project would be difficult to test because the controllers would be stuck with specific service implementations.
 </details>
+
+<details>
+<Summary><b>Module 4</b></Summary>
+
+## Reflection 
+1. The TDD workflow was helpful because writing tests first made it easier to plan the code and avoid mistakes. According to Percival (2017), a good test should give confidence that the system works, and I think these tests do that because they check different situations, like invalid statuses and empty product lists. However, I realized that some tests could be better, especially in handling duplicate order IDs more clearly. Next time, I will improve my tests by adding more real-world cases and making sure errors are handled properly.
+2. The tests mostly follow the F.I.R.S.T. principle: they run Fast, don’t depend on each other (Independent), always give the same results (Repeatable), clearly show if they pass or fail (Self-validating), and were written before the actual code (Timely). But there’s still room to improve, like making sure tests don’t affect each other by properly resetting data before each one. In the future, I will also try to test more edge cases while keeping the tests simple and clear.
+</details>
