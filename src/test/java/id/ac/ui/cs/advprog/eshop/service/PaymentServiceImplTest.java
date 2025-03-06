@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.model.Product;
@@ -57,8 +58,8 @@ class PaymentServiceImplTest {
         invalidCODData.put("address", "");
         invalidCODData.put("deliveryFee", "5000");
 
-        paymentVoucher = new Payment("PAY-001", "VoucherCode", "SUCCESS", validVoucherData);
-        paymentCOD = new Payment("PAY-002", "CashOnDelivery", "PENDING", validCODData);
+        paymentVoucher = new Payment("PAY-001", "VoucherCode", PaymentStatus.SUCCESS.getValue(), validVoucherData);
+        paymentCOD = new Payment("PAY-002", "CashOnDelivery", PaymentStatus.PENDING.getValue(), validCODData);
     }
 
     @Test
@@ -68,18 +69,18 @@ class PaymentServiceImplTest {
         Payment result = paymentService.addPayment(order, "VoucherCode", validVoucherData);
 
         assertNotNull(result);
-        assertEquals("SUCCESS", result.getStatus());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
     @Test
     void testAddPaymentVoucherRejected() {
-        doReturn(new Payment("PAY-003", "VoucherCode", "REJECTED", invalidVoucherData))
+        doReturn(new Payment("PAY-003", "VoucherCode", PaymentStatus.REJECTED.getValue(), invalidVoucherData))
                 .when(paymentRepository).save(any(Payment.class));
 
         Payment result = paymentService.addPayment(order, "VoucherCode", invalidVoucherData);
 
-        assertEquals("REJECTED", result.getStatus());
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
@@ -89,18 +90,18 @@ class PaymentServiceImplTest {
 
         Payment result = paymentService.addPayment(order, "CashOnDelivery", validCODData);
 
-        assertEquals("PENDING", result.getStatus());
+        assertEquals(PaymentStatus.PENDING.getValue(), result.getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
     @Test
     void testAddPaymentCODRejected() {
-        doReturn(new Payment("PAY-004", "CashOnDelivery", "REJECTED", invalidCODData))
+        doReturn(new Payment("PAY-004", "CashOnDelivery", PaymentStatus.REJECTED.getValue(), invalidCODData))
                 .when(paymentRepository).save(any(Payment.class));
 
         Payment result = paymentService.addPayment(order, "CashOnDelivery", invalidCODData);
 
-        assertEquals("REJECTED", result.getStatus());
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
@@ -108,9 +109,9 @@ class PaymentServiceImplTest {
     void testSetStatusSuccess() {
         doReturn(paymentVoucher).when(paymentRepository).save(any(Payment.class));
 
-        Payment result = paymentService.setStatus(paymentVoucher, "SUCCESS");
+        Payment result = paymentService.setStatus(paymentVoucher, PaymentStatus.SUCCESS.getValue());
 
-        assertEquals("SUCCESS", result.getStatus());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
@@ -118,9 +119,9 @@ class PaymentServiceImplTest {
     void testSetStatusRejected() {
         doReturn(paymentVoucher).when(paymentRepository).save(any(Payment.class));
 
-        Payment result = paymentService.setStatus(paymentVoucher, "REJECTED");
+        Payment result = paymentService.setStatus(paymentVoucher, PaymentStatus.REJECTED.getValue());
 
-        assertEquals("REJECTED", result.getStatus());
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
