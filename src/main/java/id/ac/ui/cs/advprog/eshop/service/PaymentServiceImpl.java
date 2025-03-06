@@ -39,21 +39,28 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private String validatePayment(String method, Map<String, String> paymentData) {
-        if (method.equals("VoucherCode")) {
-            String voucherCode = paymentData.get("voucherCode");
-            if (voucherCode != null && voucherCode.length() == 16
-                    && voucherCode.startsWith("ESHOP")
-                    && voucherCode.replaceAll("[^0-9]", "").length() == 8) {
-                return "SUCCESS";
-            }
-            return "REJECTED";
+        if ("VoucherCode".equals(method)) {
+            return validateVoucherPayment(paymentData);
+        } else if ("CashOnDelivery".equals(method)) {
+            return validateCashOnDelivery(paymentData);
         }
-        else if (method.equals("CashOnDelivery")) {
-            if (paymentData.get("address") == null || paymentData.get("address").isEmpty()
-                    || paymentData.get("deliveryFee") == null || paymentData.get("deliveryFee").isEmpty()) {
-                return "REJECTED";
-            }
-            return "PENDING";
+        return "PENDING";
+    }
+
+    private String validateVoucherPayment(Map<String, String> paymentData) {
+        String voucherCode = paymentData.get("voucherCode");
+        if (voucherCode != null && voucherCode.length() == 16
+                && voucherCode.startsWith("ESHOP")
+                && voucherCode.replaceAll("[^0-9]", "").length() == 8) {
+            return "SUCCESS";
+        }
+        return "REJECTED";
+    }
+
+    private String validateCashOnDelivery(Map<String, String> paymentData) {
+        if (paymentData.get("address") == null || paymentData.get("address").isEmpty()
+                || paymentData.get("deliveryFee") == null || paymentData.get("deliveryFee").isEmpty()) {
+            return "REJECTED";
         }
         return "PENDING";
     }
